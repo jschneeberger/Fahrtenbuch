@@ -1,5 +1,5 @@
 Version of 2015
  - Spring 4.2
  - Hibernate 4.2
- - JSP / HTML5
- - Twitter Bootstrap
+ - HTML5 with ThymeLeaf 3
+ - Twitter Bootstrap 2.3.2

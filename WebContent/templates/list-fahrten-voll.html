@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="head::head"></head>
+<body>
+	<div id="head">
+		<h1>Fahrtenbuch S3</h1>
+	</div>
+	<div th:include="menu::menu" id="menu"></div>
+	<div id="content">
+		<h2 th:text="${title}">Willkommen!</h2>
+		<div th:if="${unempty}">
+			<p th:text="${message}">Text</p>
+			<table class="listing">
+				<colgroup>
+					<col/>
+					<col/>
+					<col/>
+					<col/>
+					<col/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Nachname</th>
+						<th>Vorname</th>
+						<th>Abfahrt</th>
+						<th>Ankunft</th>
+						<th>Boot</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="fahrt : ${fahrten}">
+						<td th:text="${fahrt.nachname}"></td>
+						<td th:text="${fahrt.vorname}"></td>
+						<td th:text="${fahrt.abfahrt}"></td>
+						<td th:text="${fahrt.ankunft}"></td>
+						<td th:text="${fahrt.bootsname}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p th:if="${not unempty}">Es wurden noch keine Fahrten durchgeführt.</p>
+	</div>
+</body>
+</html>  
