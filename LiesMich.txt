@@ -1,0 +1,91 @@
+Dieses Beispielprojekt läßt sich am besten verstehen,
+wenn Sie die Dateien in der folgenden Reihenfolge lesen:
+
+1.	WebContent\WEB-INF\web.xml
+
+	web.xml vereinbart Spring als das Servlet, das für die Applikation verwendet wird.
+	Ausserdem wird noch das url pattern *.s spezifiziert. Diese bedeutet, dass alle
+	Befehle an das System mit .s enden müssen - z.B. http://.../index.s
+	
+	Weil das Spring Servlet den Namen 'fahrtenbuch' erhalten hat, deshalb befindet sich
+	die Spezifikation dieses Servlets in
+
+2.	WebContent\WEB-INF\fahrtenbuch-servlet.xml
+
+	fahrtenbuch-servlet.xml enthält zwei Teile:
+	a)	Eine Zuordnung von URLs/Kommandos zu Controllern
+		Jeder URL wird ein Controller Name zugeordnet.
+		Zwei verschiedene URLs können durchaus auf den selben Controller verweisen.
+	b)	Eine Konfiguration der Views.
+		Hier ist spezifiziert, dass die Views als JSP Dateien vorliegen
+		und dass sie sich im Ordner WebContent\view befinden.
+		
+	Die Benutzung von Spring impliziert, dass auch die Datei applicationContext.xml
+	eingelesen wird.
+
+3.	src\applicationContext.xml und src\applicationContextInternal.xml
+
+	Es sind 3 Abschnitte enthalten:
+	a)	Ganz unten: Die Zuordnung der Controller Namen (aus 2a) zu JavaBeans.
+		Jeder Controller Namen wird genau einer Klasse zugeordnet.
+		Mit der Spezifikation <property ...> wird die JavaBean konfiguriert.
+		In unserem Fall wird jeder JavaBean ein Data Access Objekt (DAO) zugeordnet.
+		Diese Zuordnung funktioniert per "Dependency Injection", d.h. dass die
+		Klasse einen gleichnamigen getter haben muss, der von Spring das
+		konfigurierte Objekt injiziert bekommt.
+	b)	In der Mitte: Die Spezifikation der DAO Objekte.
+		Jedes DAO Objekt erhält die hibernateSessionFactory,
+		die dann im der jeweiligen DAO Klasse als 'template' verwendet werden kann.
+	c)	Ganz oben:
+		 -	Die Konfiguration der Datenbank
+		 -	Die Konfiguration der hibernateSessionFactory
+	
+	Hinweis: Wenn Sie in Eclipse das Plugin SpringIde installiert haben, dann können 
+	******** Sie die Datei applicationContext.xml auch in ihrer Spring Konfiguration
+	navigieren. Öffnen Sie dazu im Package Explorer für die Datei applicationContext.xml
+	das Kontext Menü und wählen Sie: show in > Spring Explorer. Im Spring Explorer können
+	Sie dann (ebenfalls mit dem Kontext Menü) für applicationContext.xml auswählen: "Open Graph".
+	Diese Darstellung zeigt die Abhängigkeit der SpringBeans voneinander.
+
+4.	src\pms.controller
+
+	Enthält die Controller der Applikation, die die einzlnen Kommandos verarbeiten.
+	Beispiele (die einzelnen Klassen enthalten Kommentare, die die Funktionsweise
+	erklären):
+	a)	Home.java (verarbeitet das Kommando .../index.s)
+	b)	AlleBoote.Java
+
+
+5.	WebContent\view
+
+6.	src\pms.om
+
+7.	src\pms.dao
+
+8.	test
+
+	Der Ordner test wurde so kofiguriert, dass die class Dateien auch in diesem Ordner
+	abgelegt werden. Dies hat den Vorteil, dass Tests nicht der Web Applikation gespeichert
+	werden.
+	
+	Die Packages in test werden den Packages in src nachgebildet.
+
+9.	UTF-8 Zeichenkodierung
+
+	Die korrekte Verwendung von UTF-8 ist nicht enfach. Man muss darauf achten, dass die gesamte
+	Kette von Programmen und Datenübertragungen korrekt UTF-8 unterstützt. Folgende Dinge müssen bedacht
+	werden:
+
+	 - Schreiben Sie UTF-8 immer groß (und nicht utf-8, der IE versteht das nicht)
+	 - Eclipse auf UTF-8 stellen
+	 - Browser auf UTF-8 stellen
+	 - Die Datenbank muss mit UFT-8 Kodierung erzeugt werden.
+	 - Benutzen Sie sowohl
+	   <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	   als auch
+	   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	   in Ihren jsp Dateien.
+	   In den jsp Datein müssen Sie auch
+	   httpServletRequest.setCharacterEncoding("UTF-8");
+	   setzen, bevor Sie die Parameter aus dem Request auslesen.
+	 - Senden Sie Formularinhalte per post (sonst müssen Sie noch eine URL Kodierung einführen)

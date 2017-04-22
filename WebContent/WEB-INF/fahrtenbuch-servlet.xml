@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Zuordung (mapping) von URL (command) zu Controller -->
+	<bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/Home.s">HomeCo</prop>
+				<prop key="/AlleBoote.s">AlleBooteCo</prop>
+				<prop key="/EditBoot.s">EditBootCo</prop>
+				<prop key="/NeuesBoot.s">NeuesBootCo</prop>
+				<prop key="/LoescheBoot.s">LoescheBootCo</prop>
+				<prop key="/SaveBoot.s">SaveBootCo</prop>
+				<prop key="/NeuePerson.s">NeuePersonCo</prop>
+				<prop key="/EditPerson.s">EditPersonCo</prop>
+				<prop key="/AllePersonen.s">AllePersonenCo</prop>
+				<prop key="/SavePerson.s">SavePersonCo</prop>
+				<prop key="/LoeschePerson.s">LoeschePersonCo</prop>
+				<prop key="/FreieBoote.s">FreieBooteCo</prop>
+				<prop key="/BeginneFahrt.s">BeginneFahrtCo</prop>
+				<prop key="/BeendeFahrt.s">BeendeFahrtCo</prop>
+				<prop key="/AlleFahrten.s">AlleFahrtenCo</prop>
+				<prop key="/AktuelleFahrten.s">AktuelleFahrtenCo</prop>
+				<prop key="/SaveFahrt.s">SaveFahrtCo</prop>
+				<prop key="/StopFahrt.s">StopFahrtCo</prop>
+				<prop key="/AlleFahrtenVoll.s">AlleFahrtenVollCo</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>

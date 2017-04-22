@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/hibernatefahrtenbuchtest" />
+		<property name="user" value="root" />
+		<property name="password" value="" />
+		<property name="minPoolSize" value="2" />
+      	<property name="maxPoolSize" value="4" />
+	</bean>
+	
+	<import resource="classpath:applicationContextInternal.xml"/>
+	
+	<bean id="bootDaoTest" class="pms.dao.BootDaoTest">
+		<property name="bootDao" ref="bootDao" />
+	</bean>
+
+	<bean id="personDaoTest" class="pms.dao.PersonDaoTest">
+		<property name="personDao" ref="personDao" />
+	</bean>
+
+	<bean id="fahrtDaoTest" class="pms.dao.FahrtDaoTest">
+		<property name="fahrtDao" ref="fahrtDao" />
+		<property name="personDao" ref="personDao" />
+		<property name="bootDao" ref="bootDao" />
+		<property name="sessionFactory" ref="hibernateSessionFactory"/>
+	</bean>
+
+</beans>
