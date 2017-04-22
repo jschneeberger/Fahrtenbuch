@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Define the controllers using annotations -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+	<context:component-scan base-package="de.hdu.pms.ctrl"/>
+	
+	<!-- Die folgenden beiden Teile wurden ausgelagert, damit der data-access-context für Unit-Tests wiederverwendet werden kann. -->
+	
+	<!-- ******************* -->
+	<!-- Database            -->
+	<!-- ******************* -->
+	
+    <bean class="de.hdu.pms.Startup" id="init" init-method="initDB">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="user" value="root" />
+		<property name="password" value="" />
+		<property name="defaultDBurl" value="jdbc:mysql://localhost:3306/mysql" />
+		<property name="newDB" value="fahrtenbuch" />
+    </bean>
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close"
+		 depends-on="init">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/fahrtenbuch" />
+		<property name="user" value="root" />
+		<property name="password" value="" />
+		<property name="minPoolSize" value="2" />
+      	<property name="maxPoolSize" value="4" />
+	</bean>
+	
+	<!-- ******************* -->
+	<!-- Data Access         -->
+	<!-- ******************* -->
+	
+	<import resource="data-access-context.xml" />
+	
+	<!-- ******************* -->
+	<!-- Controllers         -->
+	<!-- ******************* -->
+	
+	<bean id="personController" class="de.hdu.pms.ctrl.PersonController">
+		<property name="personDao" ref="personDao" />
+	</bean>
+	
+	<bean id="bootController" class="de.hdu.pms.ctrl.BootController">
+		<property name="bootDao" ref="bootDao" />
+	</bean>
+	
+	<bean id="fahrtController" class="de.hdu.pms.ctrl.FahrtController">
+		<property name="fahrtDao" ref="fahrtDao" />
+		<property name="bootDao" ref="bootDao" />
+		<property name="personDao" ref="personDao" />
+	</bean>
+	
+	<!-- ******************* -->
+	<!-- Views               -->
+	<!-- ******************* -->
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+</beans>

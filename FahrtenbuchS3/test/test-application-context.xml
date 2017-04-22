@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="de.hdu.pms.Startup" id="init" init-method="initDB">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="user" value="root" />
+		<property name="password" value="" />
+		<property name="defaultDBurl" value="jdbc:mysql://localhost:3306/mysql" />
+		<property name="newDB" value="fahrtenbuchtest" />
+    </bean>
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/fahrtenbuchtest" />
+		<property name="user" value="root" />
+		<property name="password" value="" />
+		<property name="minPoolSize" value="2" />
+      	<property name="maxPoolSize" value="4" />
+	</bean>
+	
+	<import resource="data-access-context.xml"/>
+	
+	<bean id="bootDaoTest" class="de.hdu.pms.dao.BootDaoTest">
+		<property name="bootDao" ref="bootDao" />
+	</bean>
+
+	<bean id="personDaoTest" class="de.hdu.pms.dao.PersonDaoTest">
+		<property name="personDao" ref="personDao" />
+	</bean>
+
+	<bean id="fahrtDaoTest" class="de.hdu.pms.dao.FahrtDaoTest">
+		<property name="fahrtDao" ref="fahrtDao" />
+		<property name="personDao" ref="personDao" />
+		<property name="bootDao" ref="bootDao" />
+		<property name="sessionFactory" ref="hibernateSessionFactory"/>
+	</bean>
+
+</beans>
