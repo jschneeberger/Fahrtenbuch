@@ -3,15 +3,8 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>Fahrtenbuch (Spring 3)</display-name>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:application-context.xml</param-value>
-	</context-param>
+	
+	<display-name>Fahrtenbuch (Spring 3, Hibernate 3, ThymeLeaf)</display-name>
 
 	<filter>
 		<filter-name>encoding-filter</filter-name>
@@ -28,23 +21,22 @@
 	</filter-mapping>
 
 	<servlet>
-		<servlet-name>simple-form</servlet-name>
+		<servlet-name>fahrtenbuch</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value></param-value>
+            <param-value>classpath:application-context.xml</param-value>
 		</init-param>
+        <load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>simple-form</servlet-name>
+		<servlet-name>fahrtenbuch</servlet-name>
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 
-
-<!--  Start der Appklikation über z.B. index.html-->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
 </web-app>

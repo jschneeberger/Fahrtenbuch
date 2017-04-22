@@ -1,74 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans 
-                           http://www.springframework.org/schema/beans/spring-beans.xsd
-                           http://www.springframework.org/schema/context 
-                           http://www.springframework.org/schema/context/spring-context.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!-- Define the controllers using annotations -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
-	<context:component-scan base-package="de.fhd.pms.ctrl"/>
-	
-	<!-- Die folgenden beiden Teile wurden ausgelagert, damit der data-access-context für Unit-Tests wiederverwendet werden kann. -->
-	
-	<!-- ******************* -->
-	<!-- Database            -->
-	<!-- ******************* -->
-	
-    <bean class="de.fhd.pms.Startup" id="init" init-method="initDB">
+	<!-- **************************************************************** -->
+	<!-- Database and Hibernate -->
+	<!-- **************************************************************** -->
+	<bean class="de.dit.pms.service.Startup" id="init" init-method="initDB">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="user" value="root" />
 		<property name="password" value="" />
 		<property name="defaultDBurl" value="jdbc:mysql://localhost:3306/mysql" />
 		<property name="newDB" value="fahrtenbuch" />
-    </bean>
+	</bean>
 
-	<bean id="dataSource"
-		class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close"
-		 depends-on="init">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/fahrtenbuch" />
-		<property name="user" value="root" />
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		depends-on="init">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/fahrtenbuch" />
+		<property name="username" value="root" />
 		<property name="password" value="" />
-		<property name="minPoolSize" value="2" />
-      	<property name="maxPoolSize" value="4" />
+	</bean>
+
+	<bean id="hibernateSessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>de.dit.pms.model.Boot</value>
+				<value>de.dit.pms.model.Fahrt</value>
+				<value>de.dit.pms.model.Person</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+			</props>
+		</property>
 	</bean>
 	
-	<!-- ******************* -->
-	<!-- Data Access         -->
-	<!-- ******************* -->
-	
-	<import resource="data-access-context.xml" />
-	
-	<!-- ******************* -->
-	<!-- Controllers         -->
-	<!-- ******************* -->
-	
-	<bean id="personController" class="de.fhd.pms.ctrl.PersonController">
-		<property name="personDao" ref="personDao" />
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="hibernateSessionFactory" />
 	</bean>
 	
-	<bean id="bootController" class="de.fhd.pms.ctrl.BootController">
-		<property name="bootDao" ref="bootDao" />
+	<!-- **************************************************************** -->
+	<!-- RESOURCE FOLDERS CONFIGURATION -->
+	<!-- Dispatcher configuration for serving static resources -->
+	<!-- **************************************************************** -->
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+
+
+	<!-- **************************************************************** -->
+	<!-- SPRING ANNOTATION PROCESSING -->
+	<!-- **************************************************************** -->
+	<mvc:annotation-driven />
+	<context:component-scan base-package="de.dit.pms.ctrl" />
+	<context:component-scan base-package="de.dit.pms.service" />
+
+
+	<!-- **************************************************************** -->
+	<!-- MESSAGE EXTERNALIZATION/INTERNATIONALIZATION -->
+	<!-- Standard Spring MessageSource implementation -->
+	<!-- **************************************************************** -->
+	<!-- <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"> -->
+	<!-- <property name="basename" value="Messages" /> -->
+	<!-- </bean> -->
+
+
+	<!-- **************************************************************** -->
+	<!-- THYMELEAF-SPECIFIC ARTIFACTS -->
+	<!-- TemplateResolver <- TemplateEngine <- ViewResolver -->
+	<!-- **************************************************************** -->
+
+	<bean id="templateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix" value="/templates/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified. -->
+		<property name="cacheable" value="true" />
 	</bean>
-	
-	<bean id="fahrtController" class="de.fhd.pms.ctrl.FahrtController">
-		<property name="fahrtDao" ref="fahrtDao" />
-		<property name="bootDao" ref="bootDao" />
-		<property name="personDao" ref="personDao" />
+
+	<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
 	</bean>
-	
-	<!-- ******************* -->
-	<!-- Views               -->
-	<!-- ******************* -->
-	
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/view/" />
-		<property name="suffix" value=".jsp" />
+
+	<bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<property name="contentType" value="text/html; charset=UTF-8"/> 
 	</bean>
-	
+
+
 </beans>
+
+

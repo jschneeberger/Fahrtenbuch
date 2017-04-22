@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="head::head"></head>
+<body>
+	<div id="head">
+		<h1>Fahrtenbuch S3</h1>
+	</div>
+	<div th:include="menu::menu" id="menu"></div>
+	<div id="content">
+		<h2 th:text="${title}">Willkommen!</h2>
+		<p th:text="${message}">Text</p>
+		<table class="listing">
+			<colgroup>
+				<col/>
+				<col/>
+				<col/>
+				<col/>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Boot</th>
+					<th>Abfahrt</th>
+					<th>Ankunft</th>
+					<th>Mannschaft</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="fahrt : ${fahrten}">
+					<td>
+						<a href="StopFahrt.html" th:href="@{StopFahrt.html(id=${fahrt.id})}" th:text="${fahrt.bootsname}"></a>
+					</td>
+					<td th:text="${fahrt.abfahrt}"></td>
+					<td th:text="${fahrt.ankunft}"></td>
+					<td th:text="${fahrt.mannschaft}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
