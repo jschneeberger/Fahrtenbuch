@@ -4,11 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="head.html"/>
+<jsp:include page="head.htm"/>
 </head>
 <body>
 	<div id="head"><h1>Fahrtenbuch</h1></div>
-	<jsp:include page="menu.html"/>
+	<jsp:include page="menu.htm"/>
 	<div id="content">
 		<h2><c:out value="${title}"/></h2>
 		<p><c:out value="${message}"/></p>
@@ -29,17 +29,17 @@
 				<c:forEach items="${personen}" var="person">
 					<tr>
 						<td>
-							<a href="EditPerson.s?id=<c:out value="${person.id}"/>">
+							<a href="EditPerson.html?id=<c:out value="${person.id}"/>">
 								<img src="images/button_edit.png" alt="Icon - Bearbeite Boot"/>
 							</a>
 						</td>
 						<td>
-							<a href="LoeschePerson.s?id=<c:out value="${person.id}"/>">
+							<a href="LoeschePerson.html?id=<c:out value="${person.id}"/>">
 								<img src="images/button_drop.png" alt="Icon - Lösche Boot"/>
 							</a>
 						</td>
 						<td>
-							<a href="EditPerson.s?id=<c:out value="${person.id}"/>">
+							<a href="EditPerson.html?id=<c:out value="${person.id}"/>">
 								<c:out value="${person.vorname}"/> <c:out value="${person.nachname}"/>
 							</a>
 						</td>

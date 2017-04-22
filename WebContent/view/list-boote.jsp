@@ -4,11 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="head.html"/>
+<jsp:include page="head.htm"/>
 </head>
 <body>
 	<div id="head"><h1>Fahrtenbuch</h1></div>
-	<jsp:include page="menu.html"/>
+	<jsp:include page="menu.htm"/>
 	<div id="content">
 		<h2><c:out value="${title}"/></h2>
 		<p><c:out value="${message}"/></p>
@@ -36,12 +36,12 @@
 					<tr>
 						<c:if test="${edit}">
 							<td>
-								<a href="EditBoot.s?id=<c:out value="${boot.id}"/>">
+								<a href="EditBoot.html?id=<c:out value="${boot.id}"/>">
 									<img src="images/button_edit.png" alt="Icon - Bearbeite Boot"/>
 								</a>
 							</td>
 							<td>
-								<a href="LoescheBoot.s?id=<c:out value="${boot.id}"/>">
+								<a href="LoescheBoot.html?id=<c:out value="${boot.id}"/>">
 									<img src="images/button_drop.png" alt="Icon - Lösche Boot"/>
 								</a>
 							</td>
@@ -49,12 +49,12 @@
 						<td>
 							<c:choose>
 								<c:when test="${edit}">
-									<a href="EditBoot.s?id=<c:out value="${boot.id}"/>">
+									<a href="EditBoot.html?id=<c:out value="${boot.id}"/>">
 										<c:out value="${boot.name}"/>
 									</a>
 								</c:when>
 								<c:otherwise>
-									<a href="BeginneFahrt.s?id=<c:out value="${boot.id}"/>">
+									<a href="BeginneFahrt.html?id=<c:out value="${boot.id}"/>">
 										<c:out value="${boot.name}"/>
 									</a>
 								</c:otherwise>

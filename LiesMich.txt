@@ -1,66 +1,61 @@
+
 Dieses Beispielprojekt läßt sich am besten verstehen,
 wenn Sie die Dateien in der folgenden Reihenfolge lesen:
 
 1.	WebContent\WEB-INF\web.xml
 
 	web.xml vereinbart Spring als das Servlet, das für die Applikation verwendet wird.
-	Ausserdem wird noch das url pattern *.s spezifiziert. Diese bedeutet, dass alle
-	Befehle an das System mit .s enden müssen - z.B. http://.../index.s
+	Ausserdem wird noch das url pattern *.html spezifiziert. Dies bedeutet, dass alle
+	Befehle an das System mit .html enden müssen - z.B. http://.../index.html
 	
-	Weil das Spring Servlet den Namen 'fahrtenbuch' erhalten hat, deshalb befindet sich
-	die Spezifikation dieses Servlets in
+	Unter <contextConfigLocation> wird die Konfigurationsdatei für Spring definiert.
 
-2.	WebContent\WEB-INF\fahrtenbuch-servlet.xml
+2.	src\application-context.xml
 
-	fahrtenbuch-servlet.xml enthält zwei Teile:
-	a)	Eine Zuordnung von URLs/Kommandos zu Controllern
-		Jeder URL wird ein Controller Name zugeordnet.
-		Zwei verschiedene URLs können durchaus auf den selben Controller verweisen.
-	b)	Eine Konfiguration der Views.
-		Hier ist spezifiziert, dass die Views als JSP Dateien vorliegen
-		und dass sie sich im Ordner WebContent\view befinden.
-		
-	Die Benutzung von Spring impliziert, dass auch die Datei applicationContext.xml
-	eingelesen wird.
-
-3.	src\applicationContext.xml und src\applicationContextInternal.xml
-
-	Es sind 3 Abschnitte enthalten:
-	a)	Ganz unten: Die Zuordnung der Controller Namen (aus 2a) zu JavaBeans.
-		Jeder Controller Namen wird genau einer Klasse zugeordnet.
-		Mit der Spezifikation <property ...> wird die JavaBean konfiguriert.
-		In unserem Fall wird jeder JavaBean ein Data Access Objekt (DAO) zugeordnet.
-		Diese Zuordnung funktioniert per "Dependency Injection", d.h. dass die
-		Klasse einen gleichnamigen getter haben muss, der von Spring das
-		konfigurierte Objekt injiziert bekommt.
-	b)	In der Mitte: Die Spezifikation der DAO Objekte.
-		Jedes DAO Objekt erhält die hibernateSessionFactory,
-		die dann im der jeweiligen DAO Klasse als 'template' verwendet werden kann.
-	c)	Ganz oben:
-		 -	Die Konfiguration der Datenbank
-		 -	Die Konfiguration der hibernateSessionFactory
-	
-	Hinweis: Wenn Sie in Eclipse das Plugin SpringIde installiert haben, dann können 
-	******** Sie die Datei applicationContext.xml auch in ihrer Spring Konfiguration
-	navigieren. Öffnen Sie dazu im Package Explorer für die Datei applicationContext.xml
-	das Kontext Menü und wählen Sie: show in > Spring Explorer. Im Spring Explorer können
-	Sie dann (ebenfalls mit dem Kontext Menü) für applicationContext.xml auswählen: "Open Graph".
-	Diese Darstellung zeigt die Abhängigkeit der SpringBeans voneinander.
-
+    Der Application-Context beinhaltet die Beschreibung von Java Beans (eine spezielle
+    Art von Java Klassen), die für die Anwendung verwendet werden. Da es sich hier um
+    das Spring Framework handelt, spricht man bei den Beans, die im Application-Context
+    definiert sind, auch von Spring-Beans.
+    
+    Spring-Beans sind Singletons. Diese Klassen werden beim Start von Spring instanziert
+    und die Instanzen bleiben dann im Hauptspeicher, bis Spring wieder beendet wird.
+    Die Instanzen werden <property> Spezifikationen mit Informationen versorgt. Spring-
+    Beans können mit Hilfe von ids aufeinander verweisen.
+    
+    application-context.xml ist hier in 5 Abschnitte untergliedert.
+    
+    a) Die ersten Zeilen legen fest, dass die Controller durch Java Annotationen
+       definiert werden. 
+       <context:component-scan base-package="de.fhd.pms.ctrl" /> besagt, dass dieses
+       Verzeichnis nach Klassen mit Annotationen durchsucht wird. Spring Controller
+       sind mit @Controller Annotationen gekennzeichnet, die eine Methode einer Klasse
+       als Befehlsempfänger auszeichnen.
+       
+    b) Die Konfiguration der Datenbank
+	   Falls noch keine Datenbank existiert, dann wir eine neue erzeugt.
+       
+    c) Hibernate (Model) und Data Access Objects (DAO)
+       Hibernate wird durch die Angabe der Model Klassen (in de.fhd.pms.model) konfiguriert.
+	   Jedes DAO Objekt erhält die hibernateSessionFactory,
+	   die dann im der jeweiligen DAO Klasse als 'template' verwendet werden kann.
+       
+    d) Controllers
+       
+    e) Views
+    
 4.	src\pms.controller
 
 	Enthält die Controller der Applikation, die die einzlnen Kommandos verarbeiten.
 	Beispiele (die einzelnen Klassen enthalten Kommentare, die die Funktionsweise
 	erklären):
-	a)	Home.java (verarbeitet das Kommando .../index.s)
+	a)	Home.java 
 	b)	AlleBoote.Java
 
+5.	src\de.fhd.pms.dao
 
-5.	WebContent\view
+6.	src\de.fhd.pms.model
 
-6.	src\pms.om
-
-7.	src\pms.dao
+7.	WebContent\view
 
 8.	test
 
@@ -69,6 +64,10 @@ wenn Sie die Dateien in der folgenden Reihenfolge lesen:
 	werden.
 	
 	Die Packages in test werden den Packages in src nachgebildet.
+	
+	Wenn ein Test gestartet wird, dann lädt er eine eigene Spring Konfiguration
+	(in test/test-application-context.xml), die sich von der Spring Konfiguration der
+	Tomcat Applikation darin unterscheidet, dass eine andere Datenbank verwendet wird.
 
 9.	UTF-8 Zeichenkodierung
 
@@ -89,3 +88,9 @@ wenn Sie die Dateien in der folgenden Reihenfolge lesen:
 	   httpServletRequest.setCharacterEncoding("UTF-8");
 	   setzen, bevor Sie die Parameter aus dem Request auslesen.
 	 - Senden Sie Formularinhalte per post (sonst müssen Sie noch eine URL Kodierung einführen)
+
+Links:
+
+http://www.springbyexample.org/examples/simple-spring-mvc-form-annotation-config-webapp.html
+
+http://static.springsource.org/spring/docs/3.0.0.M3/spring-framework-reference/html/ch16s11.html
