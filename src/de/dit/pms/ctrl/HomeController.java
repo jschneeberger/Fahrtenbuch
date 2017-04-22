@@ -5,11 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@Controller("homeController")
 public class HomeController {
 	private static Logger log = Logger.getLogger(HomeController.class);
 	
-    @RequestMapping("/index.html")
+    @RequestMapping("/all/index.html")
     public ModelAndView edit() {
     	log.info("Controller für index.html");
 		ModelAndView mv = new ModelAndView();

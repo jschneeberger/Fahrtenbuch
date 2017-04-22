@@ -29,9 +29,9 @@ public class FahrtController {
      * <p>Searches for all {@link Fahrt} objects and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/AlleFahrten.html'.</p>
+     * <p>Expected HTTP GET and request '/all/AlleFahrten.html'.</p>
      */
-    @RequestMapping(value="/AlleFahrten.html", method=RequestMethod.GET)
+    @RequestMapping(value="/all/AlleFahrten.html", method=RequestMethod.GET)
     public ModelAndView findAll() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("title", "Fahrten");
@@ -41,7 +41,7 @@ public class FahrtController {
 		return mv;
     }
 
-    @RequestMapping(value="/BeginneFahrt.html", method=RequestMethod.GET)
+    @RequestMapping(value="/all/BeginneFahrt.html", method=RequestMethod.GET)
     public ModelAndView beginneFahrt(@RequestParam(required=true) Integer id) {
     	ModelAndView mv = new ModelAndView();
 		mv.addObject("title", "Fahrt eintragen");
@@ -55,14 +55,14 @@ public class FahrtController {
     /**
      * <p>Saves a Fahrt.</p>
      * 
-     * <p>Expected HTTP POST and request '/SaveFahrt.html'.</p>
+     * <p>Expected HTTP POST and request '/all/SaveFahrt.html'.</p>
      * @return 
      */
-    @RequestMapping(value="/SaveFahrt.html", method=RequestMethod.POST)
+    @RequestMapping(value="/all/SaveFahrt.html", method=RequestMethod.POST)
     public ModelAndView save(@RequestParam(required=true) Integer id, Integer[] sitz) {
     	try {
 			fahrtDao.beginne(id, sitz);
-			return new ModelAndView("redirect:index.html");
+			return new ModelAndView("redirect:all/index.html");
 		} catch (DaoException e) {
 			ModelAndView mv = new ModelAndView("error");
 			mv.addObject("message", e.getMessage());
@@ -74,9 +74,9 @@ public class FahrtController {
      * <p>Searches for {@link Fahrt} objects that are not yet terminated and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/AktuelleFahrten.html'.</p>
+     * <p>Expected HTTP GET and request '/all/AktuelleFahrten.html'.</p>
      */
-    @RequestMapping(value="/AktuelleFahrten.html", method=RequestMethod.GET)
+    @RequestMapping(value="/all/AktuelleFahrten.html", method=RequestMethod.GET)
     public ModelAndView findAktuelle() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("title", "Aktuelle Fahrten");
@@ -89,16 +89,16 @@ public class FahrtController {
     /**
      * <p>Terminates a Fahrt.</p>
      * 
-     * <p>Expected HTTP POST and request '/StopFahrt.html?id=5'.</p>
+     * <p>Expected HTTP POST and request '/all/StopFahrt.html?id=5'.</p>
      * @return 
      */
-    @RequestMapping(value="/StopFahrt.html", method=RequestMethod.GET)
+    @RequestMapping(value="/all/StopFahrt.html", method=RequestMethod.GET)
     public String save(@RequestParam(required=true) Integer id) {
     	fahrtDao.beende(id);
-        return "redirect:AktuelleFahrten.html";
+        return "redirect:all/AktuelleFahrten.html";
     }
 
-    @RequestMapping(value="/AlleFahrtenVoll.html", method=RequestMethod.GET)
+    @RequestMapping(value="/adm/AlleFahrtenVoll.html", method=RequestMethod.GET)
     public ModelAndView findAllVoll() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("title", "Fahrten");

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- **************************************************************** -->
+	<!-- Spring-Security -->
+	<!-- **************************************************************** -->
+
+	<http use-expressions="true">
+<!-- 		<intercept-url pattern="/login.html" access="permitAll" /> -->
+		<intercept-url pattern="/adm/**" access="hasRole('admin')" />
+<!-- 		<intercept-url pattern="/all/*" access="hasRole('member')" /> -->
+		<form-login always-use-default-target="true" login-page="/login.html"
+			authentication-failure-url="/login.html?error=true"
+			default-target-url="/" />
+		<logout invalidate-session="true" logout-url="/login.html" />
+		<access-denied-handler error-page="/login.html" />
+	</http>
+
+	<!-- Declare an authentication-manager to use a custom userDetailsService -->
+	<authentication-manager>
+		<authentication-provider user-service-ref="personService">
+			<password-encoder ref="passwordEncoder" />
+		</authentication-provider>
+	</authentication-manager>
+
+	<!-- Use a Md5 encoder since the user's passwords are stored as Md5 in the 
+		database -->
+	<beans:bean
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"
+		id="passwordEncoder" />
+
+	<!-- A custom service where Spring will retrieve users and their corresponding 
+		access levels -->
+	<!-- <bean id="personService" class="de.dit.pms.service.PersonService"/> -->
+
+</beans:beans>

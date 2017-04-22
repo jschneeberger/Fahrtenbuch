@@ -29,18 +29,18 @@
 				</tr>
 				<tr th:each="boot : ${boote}">
 					<td th:if="${edit}">
-						<a href="EditBoot.html" th:href="@{EditBoot.html(id=${boot.id})}">
+						<a href="adm/EditBoot.html" th:href="@{adm/EditBoot.html(id=${boot.id})}">
 							<img src="images/button_edit.png" alt="Icon - Bearbeite Boot"/>
 						</a>
 					</td>
 					<td th:if="${edit}">
-						<a href="LoescheBoot.html" th:href="@{LoescheBoot.html(id=${boot.id})}">
+						<a href="adm/LoescheBoot.html" th:href="@{adm/LoescheBoot.html(id=${boot.id})}">
 							<img src="images/button_drop.png" alt="Icon - Lösche Boot"/>
 						</a>
 					</td>
 					<td>
-						<a th:if="${edit}" th:href="@{EditBoot.html(id=${boot.id})}" th:text="${boot.name}"></a>
-						<a th:if="${not edit}" th:href="@{BeginneFahrt.html(id=${boot.id})}" th:text="${boot.name}"></a>
+						<a th:if="${edit}" th:href="@{adm/EditBoot.html(id=${boot.id})}" th:text="${boot.name}"></a>
+						<a th:if="${not edit}" th:href="@{all/BeginneFahrt.html(id=${boot.id})}" th:text="${boot.name}"></a>
 					</td>
 					<td th:text="${boot.sitze}"></td>
 					<td th:text="${boot.klasse}"></td>

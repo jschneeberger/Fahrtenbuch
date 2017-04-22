@@ -16,11 +16,11 @@ import de.dit.pms.service.PersonService;
 public class PersonController {
 	private static Logger log = Logger.getLogger(PersonController.class);
 	@Autowired
-	private PersonService personDao = null; //warum gleich null?
+	private PersonService personDao = null;
 
-    @RequestMapping(value="/EditPerson.html", method=RequestMethod.GET)
+    @RequestMapping(value="/adm/EditPerson.html", method=RequestMethod.GET)
     public ModelAndView edit(@RequestParam(required=false) Integer id) {
-    	log.debug("EditPerson.html");
+    	log.debug("/adm/EditPerson.html");
     	ModelAndView mv = new ModelAndView();
     	if (id == null) {
     		mv.addObject(new Person());
@@ -34,33 +34,33 @@ public class PersonController {
     /**
      * <p>Saves a person.</p>
      * 
-     * <p>Expected HTTP POST and request '/SavePerson.html'.</p>
+     * <p>Expected HTTP POST and request '/adm/SavePerson.html'.</p>
      * @return 
      */
-    @RequestMapping(value="/SavePerson.html", method=RequestMethod.POST)
+    @RequestMapping(value="/adm/SavePerson.html", method=RequestMethod.POST)
     public String save(Person person, Model model) {
         personDao.save(person);
-        return "redirect:AllePersonen.html";
+        return "redirect:all/AllePersonen.html";
     }
 
     /**
      * <p>Deletes a person.</p>
      * 
-     * <p>Expected HTTP POST and request '/LoeschePerson.html'.</p>
+     * <p>Expected HTTP POST and request '/adm/LoeschePerson.html'.</p>
      */
-    @RequestMapping(value="/LoeschePerson.html", method=RequestMethod.GET)
+    @RequestMapping(value="/adm/LoeschePerson.html", method=RequestMethod.GET)
     public String delete(Person person) {
         personDao.delete(person);
-        return "redirect:AllePersonen.html";
+        return "redirect:all/AllePersonen.html";
     }
 
     /**
      * <p>Searches for all persons and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/AllePersonen.html'.</p>
+     * <p>Expected HTTP GET and request '/all/AllePersonen.html'.</p>
      */
-    @RequestMapping(value="/AllePersonen.html", method=RequestMethod.GET)
+    @RequestMapping(value="/all/AllePersonen.html", method=RequestMethod.GET)
     public ModelAndView findAll() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("title", "Vereinsmitglieder");

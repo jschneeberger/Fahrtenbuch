@@ -11,7 +11,7 @@
 	<div id="content">
 		<h2 th:text="${title}">Willkommen!</h2>
 		<p th:text="${message}">Text</p>
-		<form method="post" action="SavePerson.html">
+		<form method="post" action="wwadm/SavePerson.html">
 			<table class="editing">
 				<colgroup>
 					<col class="attribute"/>
@@ -35,6 +35,24 @@
 						<td>Telefonnummer:</td>
 						<td>
 							<input type="text" name="telefon" th:value="${person.telefon}" size="50"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Benutzername:</td>
+						<td>
+							<input type="text" name="userid" th:value="${person.userid}" size="50"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Passwort:</td>
+						<td>
+							<input type="text" name="password" th:value="${person.password}" size="50"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Rolle:</td>
+						<td>
+							<input type="text" name="role" th:value="${person.role}" size="50"/>
 						</td>
 					</tr>
 					<tr class="submit">

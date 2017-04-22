@@ -27,17 +27,17 @@
 				</tr>
 				<tr th:each="person : ${personen}">
 					<td>
-						<a th:href="@{EditPerson.html(id=${person.id})}">
+						<a th:href="@{adm/EditPerson.html(id=${person.id})}">
 							<img src="images/button_edit.png" alt="Icon - Bearbeite Boot"/>
 						</a>
 					</td>
 					<td>
-						<a th:href="@{LoeschePerson.html(id=${person.id})}">
+						<a th:href="@{adm/LoeschePerson.html(id=${person.id})}">
 							<img src="images/button_drop.png" alt="Icon - Lösche Boot"/>
 						</a>
 					</td>
 					<td>
-						<a th:href="@{EditPerson.html(id=${person.id})}" th:text="${person.vorname}+' '+${person.nachname}"></a>
+						<a th:href="@{adm/EditPerson.html(id=${person.id})}" th:text="${person.vorname}+' '+${person.nachname}"></a>
 					</td>
 					<td th:text="${person.telefon}"></td>
 				</tr>

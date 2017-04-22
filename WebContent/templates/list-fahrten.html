@@ -29,7 +29,7 @@
 			<tbody>
 				<tr th:each="fahrt : ${fahrten}">
 					<td>
-						<a href="StopFahrt.html" th:href="@{StopFahrt.html(id=${fahrt.id})}" th:text="${fahrt.bootsname}"></a>
+						<a href="all/StopFahrt.html" th:href="@{all/StopFahrt.html(id=${fahrt.id})}" th:text="${fahrt.bootsname}"></a>
 					</td>
 					<td th:text="${fahrt.abfahrt}"></td>
 					<td th:text="${fahrt.ankunft}"></td>
