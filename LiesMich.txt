@@ -1,5 +1,5 @@
-Ergänzt durch Thymeleaf - siehe:
-http://www.thymeleaf.org/doc/Tutorial%20-%20Thymeleaf%20+%20Spring%203%2020130224.pdf
-und
-http://www.thymeleaf.org/doc/Tutorial%20-%20Using%20Thymeleaf%2020130224.pdf
-
+Version of 2015
+ - Spring 4.2
+ - Hibernate 4.2
+ - JSP / HTML5
+ - Twitter Bootstrap
