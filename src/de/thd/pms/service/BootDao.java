@@ -43,7 +43,6 @@ public class BootDao {
 	 * @param id the primary key of a {@link Boot}
 	 * @return a single Boot
 	 */
-	@Transactional
 	public Boot findById(int id) {
 		return (Boot) sessionFactory.getCurrentSession().get(Boot.class, id);
 	}
@@ -54,7 +53,6 @@ public class BootDao {
 	 * @see Boot
 	 */
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<Boot> findAll() {
 		return (List<Boot>) sessionFactory.getCurrentSession().createCriteria(Boot.class).list();
 	}
@@ -64,7 +62,6 @@ public class BootDao {
 	 * @param boot a {@link Boot} object that should be saved in the db.
 	 * @return the object specified by the parameter
 	 */
-	@Transactional
 	public Boot save(Boot boot) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(boot);
@@ -82,7 +79,6 @@ public class BootDao {
 	 * @return a List of Boot
 	 */
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<Boot> findFreie() {
 		Session session = sessionFactory.getCurrentSession();
 		List<Fahrt> aktuelleFahrten = session.createQuery("from Fahrt f where f.ankunft is null").list();

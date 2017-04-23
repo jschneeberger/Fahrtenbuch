@@ -43,13 +43,11 @@ public class PersonDao {
 	 * @param id
 	 * @return the Person
 	 */
-	@Transactional
 	public Person findById(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		return (Person) session.get(Person.class, id);
 	}
 
-	@Transactional
 	public Person save(Person person) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(person);
@@ -60,13 +58,11 @@ public class PersonDao {
 	 * @return all {@link Person} objects from the database.
 	 */
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<Person> findAll() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Person>) session.createCriteria(Person.class).list();
 	}
 
-	@Transactional
 	public void delete(Integer id) throws DaoException {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria crit = session.createCriteria(Fahrt.class).createCriteria("ruderer").add(Restrictions.eq("id", id));

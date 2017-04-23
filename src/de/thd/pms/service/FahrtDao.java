@@ -40,7 +40,6 @@ public class FahrtDao {
 	 * <p>In order to access lazy loaded properties, a HibernateCallback is used.</p>
 	 * @return A sorted set of FahrtPersonenDTO objects
 	 */
-	@Transactional
 	public Set<FahrtPersonenDTO> findNichtBeendetDTO() {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Fahrt.class);
@@ -55,7 +54,6 @@ public class FahrtDao {
 	 * <p>In order to access lazy loaded properties of those, a HibernateCallback is used.</p>
 	 * @return A sorted set of FahrtPersonenDTO objects
 	 */
-	@Transactional
 	public Set<FahrtPersonenDTO> findAllDTO() {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Fahrt.class);
@@ -103,7 +101,6 @@ public class FahrtDao {
 	 * @return all Fahrt objects in the database.
 	 */
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<Fahrt> findAll() {
 		Session session = sessionFactory.getCurrentSession();
 		return (List<Fahrt>) session.createCriteria(Fahrt.class).list();
@@ -115,7 +112,6 @@ public class FahrtDao {
 	 * @param sitz
 	 * @throws DaoException 
 	 */
-	@Transactional
 	public void beginne(int bootId, Integer[] sitz) throws DaoException {
 		Session session = sessionFactory.getCurrentSession();
 		Boot b = (Boot) session.get(Boot.class, bootId);
@@ -137,7 +133,6 @@ public class FahrtDao {
 	 * Ends a trip by adding an ankunft date.
 	 * @param id
 	 */
-	@Transactional
 	public void beende(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		Fahrt f = (Fahrt) session.get(Fahrt.class, id);
@@ -150,7 +145,6 @@ public class FahrtDao {
 	 * <p>In order to access lazy loaded properties of those, a HibernateCallback is used.</p>
 	 * @return A sorted set of FahrtPersonenDTO objects
 	 */
-	@Transactional
 	public List<FahrtBootPersonDTO> findAllVoll() {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Fahrt.class);
@@ -167,7 +161,6 @@ public class FahrtDao {
 		return liste;
 	}
 
-	@Transactional
 	public Set<Fahrt> findByBoot(Boot boot) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria crit = session.createCriteria(Fahrt.class);
