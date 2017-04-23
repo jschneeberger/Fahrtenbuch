@@ -1,50 +1,40 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head th:include="head::head"></head>
 <body>
-	<div id="head">
-		<h1>Fahrtenbuch S3</h1>
+	<div class="container-fluid">
+		<h1>Fahrtenbuch</h1>
 	</div>
-	<div th:include="menu::menu" id="menu"></div>
-	<div id="content">
-		<h2 th:text="${title}">Willkommen!</h2>
-		<p th:text="${message}">Text</p>
-		<form method="post" action="SaveBoot.html">
-			<table class="editing">
-				<colgroup>
-					<col class="attribute"/>
-					<col class="value"/>
-				</colgroup>
-				<tbody>
-					<tr>
-						<td>Name des Bootes:</td>
-						<td>
-							<input type="hidden" name="id" th:value="${boot.id}"/>
-							<input type="text" name="name" th:value="${boot.name}" size="50" />
-						</td>
-					</tr>
-					<tr>
-						<td>Anzahl der Sitze:</td>
-						<td>
-							<input type="text" name="sitze" th:value="${boot.sitze}" size="2" />
-						</td>
-					</tr>
-					<tr>
-						<td>Bootsklasse:</td>
-						<td>
-							<input type="text" name="klasse" th:value="${boot.klasse}" size="50"/>
-						</td>
-					</tr>
-					<tr class="submit">
-						<td colspan="2">
-								<input type="submit" value=" Änderungen übernehmen "/>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+	<nav th:include="menu::menu"></nav>
+	<div class="container-fluid">
+		<h2 th:text="${title}">Titel</h2>
+	</div>
+	<div class="container-fluid">
+		<p th:text="${message}">Nachricht</p>
+	</div>
+	<div class="container-fluid">
+		<form method="post" action="save">
+			<div><input type="hidden" name="id" th:value="${boot.id}" /></div>
+			<div class="form-group">
+				<label for="nameBoot">Name des Bootes</label> <input type="text"
+					class="form-control" id="nameBoot" placeholder="Das Boot"
+					name="name" th:value="${boot.name}" />
+			</div>
+			<div class="form-group">
+				<label for="anzahlSitze">Anzahl der Sitze</label> <input
+					type="number" class="form-control" id="anzahlSitze" name="sitze"
+					th:value="${boot.sitze}" />
+			</div>
+			<div class="form-group">
+				<label for="bootsklasse">Bootsklasse</label> <input type="text"
+					class="form-control" id="bootsklasse" name="klasse"
+					th:value="${boot.klasse}" />
+			</div>
+			<button type="submit" class="btn btn-default">Änderungen
+				übernehmen</button>
 		</form>
 	</div>
+	<div th:include="foot::foot"></div>
 </body>
-</html>  
+</html>

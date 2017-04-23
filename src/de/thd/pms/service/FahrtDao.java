@@ -28,6 +28,7 @@ import de.thd.pms.model.Person;
  * @author josef.schneeberger@th-deg.de
  */
 @Service
+@Transactional
 public class FahrtDao {
 	@Autowired
 	private SessionFactory sessionFactory;

@@ -20,6 +20,7 @@ import de.thd.pms.model.Fahrt;
  * @author josef.schneeberger@th-deg.de
  */
 @Repository
+@Transactional
 public class BootDao {
 	@Autowired
 	private SessionFactory sessionFactory;

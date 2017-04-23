@@ -16,6 +16,7 @@ import de.thd.pms.model.Fahrt;
 import de.thd.pms.model.Person;
 
 @Service
+@Transactional
 public class PersonDao {
 	@SuppressWarnings("unused")
 	private static Logger log = LogManager.getLogger(PersonDao.class);

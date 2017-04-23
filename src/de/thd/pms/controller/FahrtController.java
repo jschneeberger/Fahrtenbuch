@@ -31,7 +31,7 @@ public class FahrtController {
      * <p>Searches for all {@link Fahrt} objects and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/AlleFahrten.html'.</p>
+     * <p>Expected HTTP GET and request '/findAll'.</p>
      */
     @RequestMapping(value="/findAll", method=RequestMethod.GET)
     public ModelAndView findAll() {
@@ -59,8 +59,8 @@ public class FahrtController {
      * @param id der Primärschlüssel des {@link Boot}
      * @return
      */
-    @RequestMapping(value="/beginneFahrt", method=RequestMethod.GET)
-    public ModelAndView beginneFahrt(@RequestParam(required=true) Integer id) {
+    @RequestMapping(value="/beginne", method=RequestMethod.GET)
+    public ModelAndView beginne(@RequestParam(required=true) Integer id) {
     	ModelAndView mv = new ModelAndView();
 		mv.addObject("title", "Fahrt eintragen");
 		mv.addObject("message", "Tragen Sie hier die Teilnehmer der Fahrt ein.");
@@ -73,8 +73,10 @@ public class FahrtController {
     /**
      * <p>Saves a Fahrt.</p>
      * 
-     * <p>Expected HTTP POST and request '/SaveFahrt.html'.</p>
-     * @return 
+     * <p>Expected HTTP POST and request '/save'.</p>
+     * @param id of a Boot
+     * @param sitz array of ids of Person objects. 
+     * @return
      */
     @RequestMapping(value="/save", method=RequestMethod.POST)
     public ModelAndView save(@RequestParam(required=true) Integer id, Integer[] sitz) {
@@ -92,7 +94,7 @@ public class FahrtController {
      * <p>Searches for {@link Fahrt} objects that are not yet terminated and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/AktuelleFahrten.html'.</p>
+     * <p>Expected HTTP GET and request '/aktuelle'.</p>
      */
     @RequestMapping(value="/aktuelle", method=RequestMethod.GET)
     public ModelAndView findAktuelle() {
@@ -107,11 +109,11 @@ public class FahrtController {
     /**
      * <p>Terminates a Fahrt.</p>
      * 
-     * <p>Expected HTTP POST and request '/StopFahrt.html?id=5'.</p>
+     * <p>Expected HTTP GET and request '/beende?id=5'.</p>
      * @return 
      */
     @RequestMapping(value="/beende", method=RequestMethod.GET)
-    public String save(@RequestParam(required=true) Integer id) {
+    public String beende(@RequestParam(required=true) Integer id) {
     	fahrtDao.beende(id);
         return "redirect:aktuelle";
     }

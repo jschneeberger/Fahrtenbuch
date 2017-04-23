@@ -45,7 +45,22 @@
 		<servlet-name>fahrtenbuch</servlet-name>
 		<url-pattern>/svc/*</url-pattern>
 	</servlet-mapping>
-
+	
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>/css/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>/img/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>/js/*</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Start der Appklikation -->
 	<welcome-file-list>
 		<welcome-file>welcome</welcome-file>

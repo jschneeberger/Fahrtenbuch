@@ -43,6 +43,18 @@ public class Boot {
     	sitze = 0;
 	}
 
+	/**
+	 * Added to simplify thymeleaf input.
+	 * @return an array of size sitze filled with integers starting from 0
+	 */
+	public Integer[] getSitzeArray() {
+		Integer[] result = new Integer[sitze];
+		for (int i = 0; i < sitze; i++) {
+			result[i] = i;
+		}
+		return result;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

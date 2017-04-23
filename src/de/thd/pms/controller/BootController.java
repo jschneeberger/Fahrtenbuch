@@ -25,8 +25,7 @@ public class BootController {
 
 	/**
      * <p> Boot form request.</p>
-     * 
-     * <p>Expected HTTP GET and request '/EditBoot.html'.</p>
+     * <p>Expected HTTP GET and request '/edit'.</p>
      * @return 
      */
     @RequestMapping(value="/edit", method=RequestMethod.GET)
@@ -45,7 +44,7 @@ public class BootController {
     /**
      * <p>Saves a {@link Boot}.</p>
      * 
-     * <p>Expected HTTP POST and request '/SaveBoot.html'.</p>
+     * <p>Expected HTTP POST and request '/save'.</p>
      * @return 
      */
     @RequestMapping(value="/save", method=RequestMethod.POST)
@@ -62,14 +61,13 @@ public class BootController {
 
     /**
      * <p>Deletes a Boot.</p>
-     * 
-     * <p>Expected HTTP POST and request '/LoescheBoot.html'.</p>
+     * <p>Expected HTTP GET and request '/delete'.</p>
      */
     @RequestMapping(value="/delete", method=RequestMethod.GET)
     public ModelAndView delete(@RequestParam(required=true) Integer id) {
         try {
 			bootDao.delete(id);
-	        return new ModelAndView("redirect:AlleBoote.html");
+	        return new ModelAndView("redirect:findAll");
 		} catch (DaoException e) {
 			ModelAndView mv = new ModelAndView("error");
 			mv.addObject("message", e.getMessage());
@@ -81,7 +79,7 @@ public class BootController {
      * <p>Searches for all boats and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/AlleBoote.html'.</p>
+     * <p>Expected HTTP GET and request '/findAll'.</p>
      */
     @RequestMapping(value="/findAll", method=RequestMethod.GET)
     public ModelAndView findAll() {
@@ -98,7 +96,7 @@ public class BootController {
      * <p>Searches for all free foats and returns them in a 
      * <code>Collection</code>.</p>
      * 
-     * <p>Expected HTTP GET and request '/FreieBoote.html'.</p>
+     * <p>Expected HTTP GET and request '/freieBoote'.</p>
      */
     @RequestMapping(value="/freieBoote", method=RequestMethod.GET)
     public ModelAndView freieBoote() {
