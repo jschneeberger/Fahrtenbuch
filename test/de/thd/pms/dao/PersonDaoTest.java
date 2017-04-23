@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration("/test-application-context.xml")
 public class PersonDaoTest extends AbstractDataAccessTest {
 	private PersonDao personDao;
-	private String tableName = "tbl_person";
+	private String[] tables = {"tbl_person"};
 
 	@Autowired
 	public void setPersonDao(PersonDao personDao) {
@@ -23,7 +23,6 @@ public class PersonDaoTest extends AbstractDataAccessTest {
 
 	@Test
 	public void testFindById() {
-		String[] tables = {tableName};
 		// delete all rows from db table
 		deleteFromTables(tables);
 		// create new line in table

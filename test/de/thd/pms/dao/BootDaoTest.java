@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration("/test-application-context.xml")
 public class BootDaoTest extends AbstractDataAccessTest {
 	private BootDao bootDao;
-	private String tableName = "tbl_boot";
+	private String[] tables = {"tbl_boot"};
 
 	@Autowired
 	public void setBootDao(BootDao bootDao) {
@@ -23,7 +23,6 @@ public class BootDaoTest extends AbstractDataAccessTest {
 
 	@Test
 	public void testFindById() {
-		String[] tables = {tableName};
 		// deleteFromTables is provided by the Superclass AbstractDataAccessTest
 		// delete all rows from db table
 		deleteFromTables(tables);
@@ -58,7 +57,6 @@ public class BootDaoTest extends AbstractDataAccessTest {
 
 	@Test
 	public void testFindFreie() {
-		String[] tables = {tableName};
 		// delete all rows from db table
 		deleteFromTables(tables);
 		// create new line in table

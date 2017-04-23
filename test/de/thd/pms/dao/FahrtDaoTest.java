@@ -25,6 +25,7 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 	private FahrtDao fahrtDao;
 	private PersonDao personDao;
 	private BootDao bootDao;
+	private String[] tables = {"tbl_boot", "tbl_person", "tbl_fahrt", "tbl_personauffahrt"};
 
 	@Autowired
 	public void setFahrtDao(FahrtDao fahrtDao) {
@@ -50,8 +51,11 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 		personDao.create("Due", "Second", "222");
 		// store them in a set
 		Set<Person> rowers = new HashSet<Person>();
+		Integer[] sitze = new Integer[2];
+		int index = 0;
 		for (Person p : personDao.findAll()) {
 			rowers.add(p);
+			sitze[index] = p.getId();
 		}
 		// create a boat
 		bootDao.create("Two", 2, "Zweier");
@@ -60,10 +64,12 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 		for (Boot b : bootDao.findAll()) {
 			boot = b;
 		}
-		Fahrt f = new Fahrt();
-		f.setBoot(boot);
-		f.setRuderer(rowers);
-		sessionFactory.getCurrentSession().persist(f);
+		try {
+			fahrtDao.beginne(boot.getId(), sitze);
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -71,6 +77,7 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 		createEverything();
 		Set<FahrtPersonenDTO> fahrten = fahrtDao.findNichtBeendetDTO();
 		assertEquals(1, fahrten.size());
+		deleteFromTables(tables);
 	}
 
 	@Test
