@@ -53,6 +53,8 @@ public class BootDaoTest extends AbstractDataAccessTest {
 		bootDao.create("Deggendorf", 4, "Vierer");
 		int rows = countRowsInTable(tabellennameBoot);
 		assertEquals("Die DB muss eine Zeile enthalten", 1, rows);
+		// delete all rows from db table
+		deleteFromTables(tables);
 	}
 
 	@Test

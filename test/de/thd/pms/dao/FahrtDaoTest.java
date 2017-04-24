@@ -1,11 +1,13 @@
 package de.thd.pms.dao;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 
 import de.thd.pms.dto.FahrtBootPersonDTO;
@@ -25,7 +27,7 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 	private FahrtDao fahrtDao;
 	private PersonDao personDao;
 	private BootDao bootDao;
-	private String[] tables = {"tbl_boot", "tbl_person", "tbl_fahrt", "tbl_personauffahrt"};
+	private String[] tables = {"tbl_fahrt", "tbl_boot", "tbl_person"};
 
 	@Autowired
 	public void setFahrtDao(FahrtDao fahrtDao) {
@@ -42,61 +44,60 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 		this.bootDao = bootDao;
 	}
 
-	/**
-	 * Auxiliary method, generates Person, Boot, and Fahrt
-	 */
-	private void createEverything() {
-		// create two persons
-		personDao.create("Uno", "First", "111");
-		personDao.create("Due", "Second", "222");
-		// store them in a set
-		Set<Person> rowers = new HashSet<Person>();
-		Integer[] sitze = new Integer[2];
-		int index = 0;
-		for (Person p : personDao.findAll()) {
-			rowers.add(p);
-			sitze[index] = p.getId();
-		}
-		// create a boat
-		bootDao.create("Two", 2, "Zweier");
-		// retrieve it from db
-		Boot boot = null;
-		for (Boot b : bootDao.findAll()) {
-			boot = b;
-		}
+	@Before
+	public void before() {
 		try {
-			fahrtDao.beginne(boot.getId(), sitze);
+			// create two persons
+			personDao.create("Uno", "First", "111");
+			personDao.create("Due", "Second", "222");
+			// store them in a set
+			List<Person> rowers = personDao.findAll();
+			Integer[] sitze = new Integer[rowers.size()];
+			int index = 0;
+			for (Person p : rowers) {
+				sitze[index] = p.getId();
+				index++;
+			}
+			// create a boat
+			bootDao.create("Two", 2, "Zweier");
+			// retrieve it from db
+			for (Boot b : bootDao.findAll()) {
+				fahrtDao.beginne(b.getId(), sitze);
+			}
 		} catch (DaoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Could not create objects.");
 		}
 	}
-
+	
+	@After
+	public void after() {
+		try {
+			deleteFromTables(tables);
+		} catch (DataIntegrityViolationException e) {
+			// Nothing to do: this may happen when the database is already empty. 
+		}
+	}
+	
 	@Test
-	public void testFindNichtBeendetDTO() {
-		createEverything();
+	public void testFindNichtBeendetDTO() throws DaoException {
 		Set<FahrtPersonenDTO> fahrten = fahrtDao.findNichtBeendetDTO();
 		assertEquals(1, fahrten.size());
-		deleteFromTables(tables);
 	}
 
 	@Test
-	public void testFindAllDTO() {
-		createEverything();
+	public void testFindAllDTO() throws DaoException {
 		Set<FahrtPersonenDTO> fahrten = fahrtDao.findAllDTO();
 		assertEquals(1, fahrten.size());
 	}
 
 	@Test
-	public void testFindAll() {
-		createEverything();
+	public void testFindAll() throws DaoException {
 		List<Fahrt> fahrten = fahrtDao.findAll();
 		assertEquals(1, fahrten.size());
 	}
 
 	@Test
-	public void testBeginne() {
-		createEverything();
+	public void testBeginne() throws DaoException {
 		int bootId = 0;
 		for (Boot b : bootDao.findAll()) {
 			bootId = b.getId();
@@ -120,19 +121,18 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 	}
 
 	@Test
-	public void testBeende() {
-		createEverything();
+	public void testBeende() throws DaoException {
 		for (Fahrt f : fahrtDao.findAll()) {
 			fahrtDao.beende(f.getId());
 		}
 		for (Fahrt f : fahrtDao.findAll()) {
 			assertNotNull(f.getAnkunft());
 		}
+		
 	}
 
 	@Test
-	public void testFindAllVoll() {
-		createEverything();
+	public void testFindAllVoll() throws DaoException {
 		List<FahrtBootPersonDTO> fahrten = fahrtDao.findAllVoll();
 		// expect two records!
 		assertEquals(2, fahrten.size());

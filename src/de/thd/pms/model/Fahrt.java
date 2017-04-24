@@ -32,7 +32,7 @@ public class Fahrt {
 	@JoinColumn(name = "fk_boot", nullable = false)
 	private Boot boot;
 	@ManyToMany(targetEntity = de.thd.pms.model.Person.class,
-			cascade={CascadeType.PERSIST},
+			cascade={CascadeType.PERSIST, CascadeType.REMOVE},
 			fetch = FetchType.LAZY)
 	@JoinTable(
 			name="tbl_personauffahrt",
