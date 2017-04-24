@@ -112,8 +112,7 @@ public class FahrtDaoTest extends AbstractDataAccessTest {
 		try {
 			fahrtDao.beginne(bootId, personenIds);
 		} catch (DaoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 		// expect 2 - one created in createEverything, the other in beginne
 		List<Fahrt> fahrten = fahrtDao.findAll();
