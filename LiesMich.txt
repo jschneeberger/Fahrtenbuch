@@ -1,4 +1,4 @@
-Version of 2015
+Version of spring 2017
  - Spring 4.2
  - Hibernate 4.2
  - HTML5 with ThymeLeaf 3
