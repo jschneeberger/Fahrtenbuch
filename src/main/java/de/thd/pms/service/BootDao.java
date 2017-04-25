@@ -4,8 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +25,8 @@ import de.thd.pms.model.Fahrt;
 @Repository
 @Transactional
 public class BootDao {
-	@Autowired
-	private SessionFactory sessionFactory;
+    @PersistenceContext
+    EntityManager entityManager;
 	@Autowired
 	private FahrtDao fahrtDao;
 
@@ -35,7 +38,7 @@ public class BootDao {
 	 */
 	public void create(String name, int anzahlSitze, String klasse) {
 		Boot b = new Boot(name, klasse, anzahlSitze);
-		save(b);
+		entityManager.persist(b);
 	}
 
 	/**
@@ -44,7 +47,7 @@ public class BootDao {
 	 * @return a single Boot
 	 */
 	public Boot findById(int id) {
-		return (Boot) sessionFactory.getCurrentSession().get(Boot.class, id);
+		return (Boot) entityManager.find(Boot.class, id);
 	}
 	
 	/**
@@ -52,9 +55,10 @@ public class BootDao {
 	 * @return a list of Boot
 	 * @see Boot
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Boot> findAll() {
-		return (List<Boot>) sessionFactory.getCurrentSession().createCriteria(Boot.class).list();
+		CriteriaQuery<Boot> criteria = entityManager.getCriteriaBuilder().createQuery(Boot.class);
+		criteria.select(criteria.from(Boot.class));
+		return (List<Boot>) entityManager.createQuery(criteria).getResultList();
 	}
 
 	/**
@@ -63,8 +67,7 @@ public class BootDao {
 	 * @return the object specified by the parameter
 	 */
 	public Boot save(Boot boot) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(boot);
+		entityManager.persist(boot);
 		return boot;
 	}
 
@@ -80,7 +83,7 @@ public class BootDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Boot> findFreie() {
-		Session session = sessionFactory.getCurrentSession();
+		Session session = entityManager.unwrap(Session.class);
 		List<Fahrt> aktuelleFahrten = session.createQuery("from Fahrt f where f.ankunft is null").list();
 		List<Boot> alle = session.createCriteria(Boot.class).list();
 		List<Boot> result = new LinkedList<Boot>();
@@ -105,7 +108,7 @@ public class BootDao {
 		Boot boot = findById(id);
 		Set<Fahrt> fahrtenVonBoot = fahrtDao.findByBoot(boot);
 		if (fahrtenVonBoot.size() == 0) {
-			sessionFactory.getCurrentSession().delete(boot);
+			entityManager.unwrap(Session.class).delete(boot);
 		} else {
 			throw new DaoException("Das Boot kann nicht gelöscht werden, da bereits Fahrten mit diesem Boot durchgeführt worden sind.");
 		}

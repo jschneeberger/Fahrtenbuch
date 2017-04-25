@@ -70,11 +70,11 @@
 	</build>
 	<properties>
 <!-- 		<java-version>1.7</java-version> -->
-		<spring.version>4.2.4.RELEASE</spring.version>
+		<spring.version>4.3.8.RELEASE</spring.version>
 		<spring.security.version>4.2.4.RELEASE</spring.security.version>
 		<!-- <jstl.version>1.2</jstl.version> -->
-		<mysql.connector.version>5.1.5</mysql.connector.version>
-		<hibernate.version>4.2.21.Final</hibernate.version>
+		<mysql.connector.version>5.1.41</mysql.connector.version>
+		<hibernate.version>5.2.10.Final</hibernate.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 </project>
