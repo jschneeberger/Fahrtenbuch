@@ -43,7 +43,6 @@ public class FahrtPersonenDTO implements Comparable<FahrtPersonenDTO> {
 		return mannschaft;
 	}
 
-	@Override
 	public int compareTo(FahrtPersonenDTO o) {
 		return this.abfahrtDate.compareTo(o.abfahrtDate);
 	}
