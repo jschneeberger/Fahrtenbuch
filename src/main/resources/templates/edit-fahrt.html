@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="head::head"></head>
+<body>
+	<div class="container-fluid">
+		<h1>Fahrtenbuch</h1>
+	</div>
+	<nav th:include="menu::menu"></nav>
+	<div class="container-fluid"><h2 th:text="${title}">Titel</h2></div>
+	<div class="container-fluid"><p th:text="${message}">Nachricht</p></div>
+	<div class="container-fluid">
+		<form method="post" action="save">
+			<div><input type="hidden" name="id" th:value="${boot.id}"/></div>
+			<div class="form-group">
+				<label for="inputName">Name des Bootes</label>
+				<p class="form-control-static" th:text="${boot.name}">Das Boot</p>
+			</div>
+			<div class="form-group">
+				<label for="sitze">Belegung der Sitze</label>
+				<p class="form-control-static" th:each="i : ${boot.sitzeArray}">
+					<select name="sitz">
+						<option th:each="person : ${personen}" th:value="${person.id}" th:text="${person.vorname}+' '+${person.nachname}"></option>
+					</select>
+				</p>
+			</div>
+			<button type="submit" class="btn btn-default">Änderungen übernehmen</button>
+		</form>
+	</div>
+	<div th:include="foot::foot"></div>
+</body>
+</html>  

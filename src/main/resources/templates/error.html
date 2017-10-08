@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="head::head"></head>
+<body>
+	<div class="container-fluid">
+		<h1>Fahrtenbuch</h1>
+	</div>
+	<nav th:include="menu::menu"></nav>
+	<div class="container-fluid"><h2 th:text="${title}">Fehler</h2></div>
+	<div class="container-fluid"><p>Ein Problem ist aufgetreten. Die folgende Fehlermeldung kann Ihnen vielleicht weiter helfen:</p></div>
+	<div class="container-fluid"><p th:text="${message}">Nachricht</p></div>
+	<div th:include="foot::foot"></div>
+</body>
+</html>  

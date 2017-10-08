@@ -2,8 +2,8 @@ package de.thd.pms.controller;
 
 import java.util.Date;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ import de.thd.pms.service.DaoException;
 @Controller
 @RequestMapping("/boot")
 public class BootController {
-	private static Logger log = LogManager.getLogger(BootController.class);
+	private static Log logger = LogFactory.getLog(BootController.class);
 	@Autowired
 	private BootDao bootDao;
 
@@ -30,7 +30,7 @@ public class BootController {
      */
     @RequestMapping(value="/edit", method=RequestMethod.GET)
     public ModelAndView edit(@RequestParam(required=false) Integer id) {
-    	log.debug("edit");
+    	logger.debug("edit");
     	ModelAndView mv = new ModelAndView();
     	if (id == null) {
     		mv.addObject(new Boot());

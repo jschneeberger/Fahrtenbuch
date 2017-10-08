@@ -2,8 +2,8 @@ package de.thd.pms.controller;
 
 import java.util.Date;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ import de.thd.pms.service.PersonDao;
 @Controller
 @RequestMapping("/person")
 public class PersonController {
-	private static Logger log = LogManager.getLogger(PersonController.class);
+	private static Log logger = LogFactory.getLog(PersonController.class);
 	@Autowired
 	private PersonDao personDao;
 
@@ -30,7 +30,7 @@ public class PersonController {
      */
     @RequestMapping(value="/edit", method=RequestMethod.GET)
     public ModelAndView edit(@RequestParam(required=false) Integer id) {
-    	log.debug("edit id=" + id);
+    	logger.debug("edit id=" + id);
     	ModelAndView mv = new ModelAndView();
     	if (id == null) {
     		mv.addObject(new Person());

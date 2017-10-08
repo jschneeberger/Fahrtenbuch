@@ -1,14 +1,14 @@
 package de.thd.pms.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-	private static Logger log = LogManager.getLogger(HomeController.class);
+	private static Log logger = LogFactory.getLog(HomeController.class);
 	
     /**
      * Custom handler for the welcome view.
@@ -22,7 +22,7 @@ public class HomeController {
 // Welche Nachrichten tatsächlich auf der Konsole erscheine, wird durch die
 // Datei log4j.properties gesteuert.
 //    	log.debug("Test");
-    	log.info("Controller für welcome");
+    	logger.info("Controller für welcome");
 //    	log.warn("Warnung");
 //    	log.error(message);
 //    	log.fatal(message);

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="head::head"></head>
+<body>
+	<div class="container-fluid">
+		<h1>Fahrtenbuch</h1>
+	</div>
+	<nav th:include="menu::menu"></nav>
+	<div class="container-fluid"><h2 th:text="${title}">Titel</h2></div>
+	<div class="container-fluid" th:if="${unempty}"><p th:text="${message}">Nachricht</p></div>
+	<div class="container-fluid" th:if="${unempty}">
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>Nachname</th>
+					<th>Vorname</th>
+					<th>Abfahrt</th>
+					<th>Ankunft</th>
+					<th>Boot</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="fahrt : ${fahrten}">
+					<td th:text="${fahrt.nachname}"></td>
+					<td th:text="${fahrt.vorname}"></td>
+					<td th:text="${fahrt.abfahrt}"></td>
+					<td th:text="${fahrt.ankunft}"></td>
+					<td th:text="${fahrt.bootsname}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="container-fluid" th:if="${not unempty}"><p>Es wurden noch keine Fahrten durchgeführt.</p></div>
+	<div th:include="foot::foot"></div>
+</body>
+</html>  

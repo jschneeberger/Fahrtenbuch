@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="head::head"></head>
+<body>
+	<div class="container-fluid">
+		<h1>Fahrtenbuch</h1>
+	</div>
+	<nav th:include="menu::menu"></nav>
+	<div class="container-fluid"><h2 th:text="${title}">Titel</h2></div>
+	<div class="container-fluid"><p th:text="${message}">Nachricht</p></div>
+	<div class="container-fluid">
+		<form method="post" action="save">
+			<div><input type="hidden" name="id" th:value="${person.id}" /></div>
+			<div class="form-group">
+				<label for="vornamePerson">Vorname des Vereinsmitglieds</label>
+				<input type="text" class="form-control" id="vornamePerson"
+					placeholder="Vorname" name="vorname" th:value="${person.vorname}" />
+			</div>
+			<div class="form-group">
+				<label for="nachnamePerson">Nachname des Vereinsmitglieds</label>
+				<input type="text" class="form-control" id="nachnamePerson"
+					placeholder="Nachname" name="nachname" th:value="${person.nachname}" />
+			</div>
+			<div class="form-group">
+				<label for="telefonnummer">Telefonnummer</label> <input type="text"
+					class="form-control" id="telefonnummer" name="telefon"
+					th:value="${person.telefon}" />
+			</div>
+			<button type="submit" class="btn btn-default">Änderungen
+				übernehmen</button>
+		</form>
+	</div>
+	<div th:include="foot::foot"></div>
+</body>
+</html>  
