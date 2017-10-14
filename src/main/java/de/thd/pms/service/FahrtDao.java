@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +32,9 @@ import de.thd.pms.model.Person;
 @Service
 @Transactional
 public class FahrtDao {
-	@Autowired
-	private SessionFactory sessionFactory;
+    @PersistenceContext
+    EntityManager entityManager;
+    @Deprecated // don't use SimpleDateFormat. Use the new Joda time API.
 	SimpleDateFormat deutschesDatumsFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
 	/**
@@ -41,24 +44,11 @@ public class FahrtDao {
 	 * @return A sorted set of FahrtPersonenDTO objects
 	 */
 	public Set<FahrtPersonenDTO> findNichtBeendetDTO() {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Fahrt.class);
-		criteria.add(Restrictions.isNull("ankunft"));
-		@SuppressWarnings("unchecked")
-		List<Fahrt> alleFahrten = criteria.list();
-		return createDtoSet(alleFahrten);
-	}
-
-	/**
-	 * <p>returns all Fahrt objects as FahrtPersonenDTO objects.</p>
-	 * <p>In order to access lazy loaded properties of those, a HibernateCallback is used.</p>
-	 * @return A sorted set of FahrtPersonenDTO objects
-	 */
-	public Set<FahrtPersonenDTO> findAllDTO() {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Fahrt.class);
-		@SuppressWarnings("unchecked")
-		List<Fahrt> alleFahrten = criteria.list();
+		CriteriaQuery<Fahrt> criteria = entityManager.getCriteriaBuilder().createQuery(Fahrt.class);
+		Root<Fahrt> f = criteria.from(Fahrt.class);
+		criteria.where(f.get("ankunft").isNotNull());
+		TypedQuery<Fahrt> q = entityManager.createQuery(criteria);
+		List<Fahrt> alleFahrten = q.getResultList();
 		return createDtoSet(alleFahrten);
 	}
 
@@ -100,10 +90,19 @@ public class FahrtDao {
 	/**
 	 * @return all Fahrt objects in the database.
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Fahrt> findAll() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Fahrt>) session.createCriteria(Fahrt.class).list();
+		CriteriaQuery<Fahrt> criteria = entityManager.getCriteriaBuilder().createQuery(Fahrt.class);
+		criteria.select(criteria.from(Fahrt.class));
+		return (List<Fahrt>) entityManager.createQuery(criteria).getResultList();
+	}
+
+	/**
+	 * <p>returns all Fahrt objects as FahrtPersonenDTO objects.</p>
+	 * <p>In order to access lazy loaded properties of those, a HibernateCallback is used.</p>
+	 * @return A sorted set of FahrtPersonenDTO objects
+	 */
+	public Set<FahrtPersonenDTO> findAllDTO() {
+		return createDtoSet(findAll());
 	}
 
 	/**
@@ -113,17 +112,16 @@ public class FahrtDao {
 	 * @throws DaoException 
 	 */
 	public void beginne(int bootId, Integer[] sitz) throws DaoException {
-		Session session = sessionFactory.getCurrentSession();
-		Boot b = (Boot) session.get(Boot.class, bootId);
+		Boot b = (Boot) entityManager.find(Boot.class, bootId);
 		Set<Person> ruderer = new HashSet<Person>();
 		for(Integer personId : sitz) {
-			ruderer.add((Person) session.get(Person.class, personId));
+			ruderer.add((Person) entityManager.find(Person.class, personId));
 		}
 		Fahrt f = new Fahrt();
 		f.setBoot(b);
 		f.setRuderer(ruderer);
 		try {
-			session.saveOrUpdate(f);
+			entityManager.persist(f);
 		} catch (DataAccessException e) {
 			throw new DaoException("Ein und der selbe Ruderer kann nicht zwei Mal an einer Fahrt teilnehmen.");
 		}
@@ -134,10 +132,9 @@ public class FahrtDao {
 	 * @param id
 	 */
 	public void beende(int id) {
-		Session session = sessionFactory.getCurrentSession();
-		Fahrt f = (Fahrt) session.get(Fahrt.class, id);
+		Fahrt f = (Fahrt) entityManager.find(Fahrt.class, id);
 		f.setAnkunft(new Date());
-		session.saveOrUpdate(f);
+		entityManager.merge(f);
 	}
 
 	/**
@@ -146,10 +143,7 @@ public class FahrtDao {
 	 * @return A sorted set of FahrtPersonenDTO objects
 	 */
 	public List<FahrtBootPersonDTO> findAllVoll() {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Fahrt.class);
-		@SuppressWarnings("unchecked")
-		List<Fahrt> alleFahrten = criteria.list();
+		List<Fahrt> alleFahrten = findAll();
 		List<FahrtBootPersonDTO> liste = new LinkedList<FahrtBootPersonDTO>();
 		for (Fahrt f : alleFahrten) {
 			Set<Person> ruderer = f.getRuderer();
@@ -162,11 +156,12 @@ public class FahrtDao {
 	}
 
 	public Set<Fahrt> findByBoot(Boot boot) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria crit = session.createCriteria(Fahrt.class);
-		crit.add(Restrictions.eq("boot", boot));
-		@SuppressWarnings("unchecked")
-		List<Fahrt> tmp = crit.list();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Fahrt> cq = cb.createQuery(Fahrt.class);
+		Root<Fahrt> fahrt = cq.from(Fahrt.class);
+		cq.where(cb.equal(fahrt.get("boot"), boot));
+		TypedQuery<Fahrt> q = entityManager.createQuery(cq);
+		List<Fahrt> tmp = q.getResultList();
 		Set<Fahrt> result = new HashSet<Fahrt>();
 		for (Fahrt f : tmp) {
 			result.add(f);
