@@ -26,7 +26,7 @@ import de.thd.pms.model.Fahrt;
 @Transactional
 public class BootDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 	@Autowired
 	private FahrtDao fahrtDao;
 

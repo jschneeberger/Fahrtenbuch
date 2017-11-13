@@ -33,7 +33,7 @@ import de.thd.pms.model.Person;
 @Transactional
 public class FahrtDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
     @Deprecated // don't use SimpleDateFormat. Use the new Joda time API.
 	SimpleDateFormat deutschesDatumsFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 

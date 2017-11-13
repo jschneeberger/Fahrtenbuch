@@ -19,7 +19,7 @@ public class PersonDao {
 	@SuppressWarnings("unused")
 	private static Log logger = LogFactory.getLog(PersonDao.class);
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
 	/**
 	 * Creates and saves a {@link Person} object.
