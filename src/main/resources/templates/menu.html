@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="menu" class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Menü umschalten</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" th:href="@{~/welcome}">Fahrtenbuch</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fahrten <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+			<li><a th:href="@{~/boot/freieBoote}">Fahrt eintragen</a></li>
+			<li><a th:href="@{~/fahrt/aktuelle}">Fahrt austragen</a></li>
+			<li><a th:href="@{~/fahrt/findAll}">Alle Fahrten</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Registrierung <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+			<li><a th:href="@{~/boot/edit}">Neues Boot eintragen</a></li>
+			<li><a th:href="@{~/boot/findAll}">Alle Boote</a></li>
+            <li role="separator" class="divider"></li>
+			<li><a th:href="@{~/person/edit}">Neue Person eintragen</a></li>
+			<li><a th:href="@{~/person/findAll}">Alle Personen</a></li>
+          </ul>
+        </li>
+        <li><a th:href="@{~/fahrt/findAdmin}">Fahrten (admin)</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</html>
