@@ -35,7 +35,7 @@
 						<a th:if="${edit}" th:href="@{~/boot/edit(id=${boot.id})}" th:text="${boot.name}"></a>
 						<a th:if="${not edit}" th:href="@{~/fahrt/beginne(id=${boot.id})}" th:text="${boot.name}"></a>
 					</td>
-					<td th:text="${boot.sitze}"></td>
+					<td th:text="${boot.sitze}">0</td>
 					<td th:text="${boot.klasse}"></td>
 				</tr>
 			</tbody>

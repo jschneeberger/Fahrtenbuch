@@ -33,9 +33,9 @@ public class BootController {
     	log.debug("edit");
     	ModelAndView mv = new ModelAndView();
     	if (id == null) {
-    		mv.addObject(new Boot());
+    		mv.addObject("boot", new Boot());
     	} else { 
-    		mv.addObject(bootDao.findById(id));
+    		mv.addObject("boot", bootDao.findById(id));
     	}
     	mv.setViewName("edit-boot");
     	return mv;
