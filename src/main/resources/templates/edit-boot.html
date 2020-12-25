@@ -6,7 +6,7 @@
 	<div class="container-fluid">
 		<h1>Fahrtenbuch</h1>
 	</div>
-	<nav th:include="menu::menu"></nav>
+	<div th:include="menu::menu"></div>
 	<div class="container-fluid">
 		<h2 th:text="${title}">Titel</h2>
 	</div>
@@ -31,8 +31,7 @@
 					class="form-control" id="bootsklasse" name="klasse"
 					th:value="${boot.klasse}" />
 			</div>
-			<button type="submit" class="btn btn-default">Änderungen
-				übernehmen</button>
+			<button type="submit" class="btn btn-default">Änderungen übernehmen</button>
 		</form>
 	</div>
 	<div th:include="foot::foot"></div>

@@ -1,7 +1,10 @@
 package de.thd.pms.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,7 @@ import de.thd.pms.service.PersonDao;
 @Controller
 @RequestMapping("/fahrt")
 public class FahrtController {
+	private static Logger log = LoggerFactory.getLogger(FahrtController.class);
 	@Autowired
     private FahrtDao fahrtDao;
 	@Autowired
@@ -50,7 +54,7 @@ public class FahrtController {
 		mv.addObject("message", "Alle Fahrten aller Boote im Verein (Admin).");
 		List<FahrtBootPersonDTO> fahrten = fahrtDao.findAllVoll();
 		mv.addObject("fahrten", fahrten);
-		mv.addObject("unempty", new Boolean(fahrten.size() > 0));
+		mv.addObject("unempty", Boolean.valueOf(fahrten.size() > 0));
 		mv.setViewName("list-fahrten-voll");
 		return mv;
     }
@@ -80,6 +84,7 @@ public class FahrtController {
      */
     @RequestMapping(value="/save", method=RequestMethod.POST)
     public ModelAndView save(@RequestParam(required=true) Long id, Long[] sitz) {
+    	log.info("save " + id + " " + Arrays.toString(sitz));
     	try {
 			fahrtDao.beginne(id, sitz);
 			return new ModelAndView("redirect:aktuelle");

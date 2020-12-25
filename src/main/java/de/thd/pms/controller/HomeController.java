@@ -1,14 +1,14 @@
 package de.thd.pms.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-	private static Logger log = LogManager.getLogger(HomeController.class);
+	private static Logger log = LoggerFactory.getLogger(HomeController.class);
 	
     /**
      * Custom handler for the welcome view.
