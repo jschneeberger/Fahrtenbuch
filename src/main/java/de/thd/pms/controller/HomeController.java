@@ -16,7 +16,7 @@ public class HomeController {
      * determine the logical view name based on the request URL: "/welcome"
      * @return View name "home" selecting view "/view/home.jsp"
      */
-    @RequestMapping("/welcome")
+    @RequestMapping({"/welcome", "/", "/index"})
     public ModelAndView welcome() {
 // Über die log Variable, können Sie Nachrichten auf die Konsole schreiben.
 // Welche Nachrichten tatsächlich auf der Konsole erscheine, wird durch die
@@ -35,7 +35,7 @@ public class HomeController {
     
     @RequestMapping(value = "/login")
     public String login() {
-    	log.error("login");
+    	log.info("login");
     	return "login";
     }
 }

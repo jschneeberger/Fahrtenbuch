@@ -1,5 +1,7 @@
 package de.thd.pms.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import de.thd.pms.controller.HomeController;
+
 /**
  * Spring Security configuration class. Enables all necessary Spring Security
  * functions.
@@ -21,13 +25,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	private static Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 
 	private static String encryptedPasswordHashAdmin = null;
 	
 	static {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		String clearPasswordAdmin = "franzbeckenbauer";
-
+		String clearPasswordAdmin = "123456";
 		encryptedPasswordHashAdmin = encoder.encode(clearPasswordAdmin);
 	}
 
@@ -39,9 +43,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("admin")
-				.password(encryptedPasswordHashAdmin).authorities("Role_Admin");
-
+		auth.inMemoryAuthentication()
+			.passwordEncoder(passwordEncoder())
+			.withUser("admin")
+			.password(encryptedPasswordHashAdmin)
+			.authorities("Role_Admin");
 	}
 
 	/**
@@ -59,17 +65,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-				.antMatchers("/", "/index", "/welcome").permitAll()
-				.antMatchers("/fahrt/**").hasAnyAuthority("Role_Admin", "Role_Manager")
-				.anyRequest().fullyAuthenticated()
+		http.authorizeRequests()
+				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+				.antMatchers("/", "/index", "/welcome", "/fahrt/**").permitAll()
+				.antMatchers("/person/**", "/boot/**").hasAnyAuthority("Role_Admin", "Role_Manager").anyRequest().fullyAuthenticated()
 				.and()
-				.formLogin()
+			.formLogin()
 				.loginPage("/login").permitAll()
 				.defaultSuccessUrl("/index", true)
 				.failureUrl("/login")
-				.and().logout()
-				.invalidateHttpSession(true).logoutSuccessUrl("/login").logoutUrl("/logout").and().exceptionHandling();
+				.and()
+			.logout()
+				.invalidateHttpSession(true)
+				.logoutSuccessUrl("/login")
+				.logoutUrl("/logout")
+				.and()
+			.exceptionHandling();
 
 	}
 
