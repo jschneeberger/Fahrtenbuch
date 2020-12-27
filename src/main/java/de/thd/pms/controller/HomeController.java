@@ -32,5 +32,10 @@ public class HomeController {
 		mv.setViewName("home");
 		return mv;
     }
-
+    
+    @RequestMapping(value = "/login")
+    public String login() {
+    	log.error("login");
+    	return "login";
+    }
 }
