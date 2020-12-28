@@ -81,7 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.logoutUrl("/logout")
 				.and()
 			.exceptionHandling();
-
 	}
 
 }
