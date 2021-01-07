@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.0" xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+        http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
+
+<!--     find all books order by pages descending -->
+<!--     <named-query name="Book.findAllXML"> -->
+<!--         <query>SELECT b FROM Book b ORDER BY b.pages DESC</query> -->
+<!--     </named-query> -->
+
+    <!--native SQL query to find a book by isbn-->
+    <named-native-query name="Boot.findByName"
+                        result-class="de.thd.pms.model.Boot">
+        <query>SELECT * FROM boot b WHERE b.name = :name</query>
+    </named-native-query>
+
+</entity-mappings>
