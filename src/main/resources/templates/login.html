@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:include="head::head"></head>
 <body class="text-center">
-<form class="form-signin" th:action="@{/login}" method="post">
 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+<form class="form-signin" th:action="@{/login}" method="post">
 <label for="username" class="sr-only">login</label>
 <input type="text" id="username" class="form-control" name="username" placeholder="logign" required="" autofocus="">
 <label for="password" class="sr-only">Password</label>
 <input type="password" id="password" name="password" class="form-control" placeholder="password" required="">
 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>
 </body>
 </html>
