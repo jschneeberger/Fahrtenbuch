@@ -19,6 +19,7 @@ local.properties
 .settings/
 .loadpath
 .svn/
+.idea/
 .springBeans
 
 # External tool builders
